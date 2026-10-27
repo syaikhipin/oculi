@@ -8,7 +8,7 @@ dashboard, a REST API, Redpanda events, and a Milestone Generic Events bridge.
 
 Repository: <https://github.com/syaikhipin/oculi>
 
-It is a quality-first rebuild of the SentiVeillance-style pipeline. **The default face engine is
+It is a quality-first rebuild of the Surveillance pipeline. **The default face engine is
 InsightFace buffalo_l** (best open-model accuracy); its code is MIT but its pretrained weights
 are non-commercial. For commercial deployment, switch to the bundled SFace engine or license
 the InsightFace weights.
