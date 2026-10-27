@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "oculi"
+version = "0.4.0"
+description = "Open video analytics: InsightFace recognition, YOLOX objects, ALPR, liveness, tracking, Redpanda and Milestone"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = [
+    "numpy>=1.26",
+    "opencv-python-headless>=4.9",
+    "onnxruntime>=1.19",
+    "insightface>=0.7.3",
+    "fastapi>=0.110",
+    "uvicorn[standard]>=0.27",
+    "python-multipart>=0.0.9",
+    "aiokafka>=0.12",
+    "fast-alpr[onnx]>=0.4",
+    "prometheus-client>=0.20",
+]
+
+[project.optional-dependencies]
+faiss = ["faiss-cpu>=1.8"]
+test = ["pytest>=8", "httpx>=0.27"]
+
+[project.scripts]
+oculi = "oculi.cli:main"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+oculi = ["web/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

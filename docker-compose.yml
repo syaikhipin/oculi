@@ -1,0 +1,53 @@
+services:
+  redpanda:
+    image: docker.redpanda.com/redpandadata/redpanda:v24.3.1
+    command:
+      - redpanda
+      - start
+      - --overprovisioned
+      - --smp=1
+      - --memory=1G
+      - --reserve-memory=0M
+      - --node-id=0
+      - --check=false
+      - --kafka-addr=PLAINTEXT://0.0.0.0:9092
+      - --advertise-kafka-addr=PLAINTEXT://redpanda:9092
+      - --set=redpanda.auto_create_topics_enabled=true
+    ports:
+      - "9092:9092"
+    volumes:
+      - redpanda:/var/lib/redpanda/data
+    healthcheck:
+      test: ["CMD-SHELL", "rpk cluster health | grep -q 'Healthy:.*true'"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  oculi:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      OCULI_DATA_DIR: /app/data
+      OCULI_MODEL_DIR: /app/models
+      OCULI_REDPANDA_BROKERS: redpanda:9092
+      OCULI_RUN_WORKERS: "1"
+      OCULI_ENROLL_REQUIRES_LIVENESS: "1"
+      OCULI_EVENT_RETENTION_DAYS: "30"
+      # Required: export OCULI_API_KEY before `docker compose up`.
+      OCULI_API_KEY: ${OCULI_API_KEY:?set OCULI_API_KEY before starting}
+      # OCULI_MILESTONE: "1"
+      # OCULI_MILESTONE_HOST: 192.168.1.10
+      # OCULI_MILESTONE_PORT: 9999
+    volumes:
+      - oculi_data:/app/data
+      - oculi_models:/app/models
+    depends_on:
+      redpanda:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  redpanda:
+  oculi_data:
+  oculi_models:

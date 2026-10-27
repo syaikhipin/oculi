@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Oculi — open video analytics</title>
+<style>
+:root{--bg:#080c11;--panel:#0f1721;--line:#1d2a37;--text:#e6edf3;--muted:#8b9bab;--accent:#37d6a3;--blue:#5aa9ff;--warn:#ffb454}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(1200px 700px at 75% -10%,#142535 0%,var(--bg) 55%);color:var(--text);font:16px/1.6 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--accent);text-decoration:none}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+header{border-bottom:1px solid var(--line);background:rgba(8,12,17,.85);backdrop-filter:blur(10px);position:sticky;top:0;z-index:3}
+nav{display:flex;align-items:center;gap:22px;padding:14px 0;font-size:14px}
+.brand{font-weight:700;font-size:19px;letter-spacing:.3px}
+.brand .eye{color:var(--accent);margin-right:6px}
+nav a{color:var(--muted)}
+nav a:hover{color:var(--text)}
+nav .right{margin-left:auto;display:flex;gap:16px}
+.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:36px;align-items:center;padding:56px 0 24px}
+h1{font-size:50px;line-height:1.05;margin:0 0 16px;letter-spacing:-1.5px}
+h1 span{color:var(--accent)}
+.lede{color:#b9c6d3;font-size:18px;max-width:560px}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0 0}
+.badge{border:1px solid var(--line);background:#0d1620;color:var(--muted);border-radius:99px;padding:5px 11px;font-size:12px}
+.badge b{color:var(--text);font-weight:600}
+.cta{display:flex;gap:10px;margin-top:24px;flex-wrap:wrap}
+.btn{display:inline-block;padding:10px 16px;border-radius:8px;border:1px solid var(--line);color:var(--text);background:#121c27;font-size:14px}
+.btn.primary{background:var(--accent);color:#052015;border-color:transparent;font-weight:700}
+.shot{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#05090d;box-shadow:0 30px 80px rgba(0,0,0,.45)}
+.shot img{display:block;width:100%}
+section{padding:52px 0;border-top:1px solid var(--line)}
+h2{font-size:26px;margin:0 0 8px;letter-spacing:-.5px}
+.sub{color:var(--muted);margin:0 0 24px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px}
+.card h3{margin:0 0 6px;font-size:15px}
+.card p{margin:0;color:var(--muted);font-size:13.5px}
+.gallery{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.gallery figure{margin:0;background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.gallery img{width:100%;display:block}
+.gallery figcaption{color:var(--muted);font-size:12px;padding:8px 10px}
+pre{background:#05090d;border:1px solid var(--line);border-radius:10px;padding:16px;overflow:auto;font-size:13px;line-height:1.55}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+table{width:100%;border-collapse:collapse;font-size:14px;background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line)}
+th{color:var(--muted);font-weight:500;font-size:12px;text-transform:uppercase;letter-spacing:.6px}
+tr:last-child td{border-bottom:0}
+.note{border-left:2px solid var(--warn);background:#17130d;padding:10px 14px;color:#e6d5b8;font-size:13.5px;border-radius:0 8px 8px 0}
+.stats{display:flex;gap:30px;flex-wrap:wrap;margin:8px 0 0}
+.stat b{display:block;font-size:24px}
+.stat span{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.8px}
+footer{color:var(--muted);font-size:13px;padding:30px 0 50px;border-top:1px solid var(--line)}
+@media(max-width:820px){.hero{grid-template-columns:1fr}h1{font-size:38px}.grid{grid-template-columns:1fr}.gallery{grid-template-columns:1fr}nav .right{display:none}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><nav>
+  <div class="brand"><span class="eye">◉</span>Oculi</div>
+  <a href="#features">Features</a><a href="#demo">Demo</a><a href="#benchmarks">Benchmarks</a><a href="#tests">Tests</a><a href="#start">Quick start</a>
+  <div class="right"><a href="benchmarks.md">Raw benchmark</a><a href="coverage/index.html">Coverage</a></div>
+</nav></div></header>
+
+<div class="wrap">
+<section class="hero" style="border-top:0">
+  <div>
+    <h1>Open video analytics<br><span>on one box.</span></h1>
+    <p class="lede">Face recognition and watchlists, person/vehicle classification, ALPR, passive
+    liveness, tracking, snapshots, a web dashboard, REST API, Redpanda events and Milestone
+    Generic Events — assembled from open models.</p>
+    <div class="badges">
+      <span class="badge"><b>InsightFace</b> buffalo_l · 512-D</span>
+      <span class="badge"><b>YOLOX</b> person/vehicle</span>
+      <span class="badge"><b>ALPR</b> + OCR</span>
+      <span class="badge"><b>MiniFASNet</b> liveness</span>
+      <span class="badge"><b>Docker</b> + Redpanda</span>
+    </div>
+    <div class="cta">
+      <a class="btn primary" href="#start">Run it</a>
+      <a class="btn" href="#benchmarks">GPU benchmark</a>
+      <a class="btn" href="#tests">Test evidence</a>
+    </div>
+  </div>
+  <div class="shot"><img src="assets/oculi-demo.gif" alt="Oculi dashboard tour"></div>
+</section>
+
+<section id="features">
+  <h2>What it does</h2>
+  <p class="sub">One pipeline, one SQLite database, one API. No cloud dependency.</p>
+  <div class="grid">
+    <div class="card"><h3>Face watchlists</h3><p>InsightFace SCRFD + ArcFace 512-D templates, 1:N search, 1:1 verification and liveness gating.</p></div>
+    <div class="card"><h3>People & vehicles</h3><p>YOLOX-s classes with per-source track IDs and event snapshots.</p></div>
+    <div class="card"><h3>License plates</h3><p>fast-alpr plate detector + CCT OCR, event deduplication and metadata.</p></div>
+    <div class="card"><h3>Streaming events</h3><p>JSON events to Redpanda/Kafka, SQLite persistence, retention and Prometheus metrics.</p></div>
+    <div class="card"><h3>Operator UI</h3><p>Live events, snapshots, source management, enrollment, search and image analysis.</p></div>
+    <div class="card"><h3>VMS bridge</h3><p>RTSP ingest and Milestone Generic Events over TCP, UDP or webhook.</p></div>
+  </div>
+</section>
+
+<section id="demo">
+  <h2>Dashboard</h2>
+  <p class="sub">Captured from the running app. Animated tour above; stills below.</p>
+  <div class="gallery">
+    <figure><img src="assets/dashboard.png" alt="Dashboard"><figcaption>Live events and counters</figcaption></figure>
+    <figure><img src="assets/events.png" alt="Event log"><figcaption>Event log with snapshots and liveness</figcaption></figure>
+    <figure><img src="assets/watchlists.png" alt="Watchlist search"><figcaption>512-D enrollment and 1:N search</figcaption></figure>
+    <figure><img src="assets/detect.png" alt="Detect"><figcaption>Objects, ALPR and image overlay</figcaption></figure>
+    <figure><img src="assets/sources.png" alt="Sources"><figcaption>RTSP/file sources and Milestone flag</figcaption></figure>
+    <figure><img src="assets/oculi-demo.gif" alt="Animated tour"><figcaption>Animated tour (GIF)</figcaption></figure>
+  </div>
+</section>
+
+<section id="benchmarks">
+  <h2>GPU benchmark</h2>
+  <p class="sub">Modal Tesla T4 · ONNX Runtime GPU · InsightFace buffalo_l.</p>
+  <table>
+    <thead><tr><th>Face detect + 512-D embedding</th><th>CPU</th><th>CUDA (T4)</th><th>Speed-up</th><th>CUDA img/s</th></tr></thead>
+    <tbody>
+      <tr><td>640 × 480</td><td>130.1 ms</td><td>36.7 ms</td><td>3.5×</td><td>27.2</td></tr>
+      <tr><td>1280 × 720</td><td>141.9 ms</td><td>32.7 ms</td><td><b>4.3×</b></td><td>30.6</td></tr>
+      <tr><td>1920 × 1080</td><td>147.8 ms</td><td>32.9 ms</td><td>4.5×</td><td>30.4</td></tr>
+    </tbody>
+  </table>
+  <table style="margin-top:14px">
+    <thead><tr><th>Stage (same T4 host)</th><th>Mean latency</th><th>Throughput</th><th>Provider</th></tr></thead>
+    <tbody>
+      <tr><td>Passive liveness (MiniFASNet)</td><td>5.7 ms</td><td>174.4 FPS</td><td>CPU session</td></tr>
+      <tr><td>ALPR (fast-alpr)</td><td>26.2 ms</td><td>38.1 FPS</td><td>ONNX Runtime</td></tr>
+      <tr><td>YOLOX objects</td><td>32.5 ms</td><td>30.8 FPS</td><td>ONNX Runtime CUDA</td></tr>
+      <tr><td>Full <code>analyze()</code> street image</td><td>130.1 ms</td><td>7.7 FPS</td><td>mixed</td></tr>
+      <tr><td>Face search (detect + embed + FAISS)</td><td>60.0 ms</td><td>16.7 FPS</td><td>CUDA</td></tr>
+    </tbody>
+  </table>
+  <p class="sub" style="margin-top:14px">On a T4, InsightFace face work is <b>3.5–4.5× faster</b> on CUDA in this run, and
+  YOLOX moved from CPU-only OpenCV DNN to ONNX Runtime CUDA (30.8 FPS). The full pipeline is now
+  <b>7.7 FPS</b>; the next GPU wins are TensorRT for YOLOX and moving ALPR/liveness fully onto CUDA.
+  Raw results: <a href="benchmarks.md">benchmarks.md</a> · <a href="gpu_results.json">JSON</a>.</p>
+  <div class="note">The default face path uses InsightFace buffalo_l. Its code is MIT, the weights are
+  non-commercial. Set <code>OCULI_FACE_ENGINE=sface</code> for the MIT/Apache-2.0 fallback.</div>
+</section>
+
+<section id="tests">
+  <h2>Test evidence</h2>
+  <div class="grid">
+    <div class="card"><h3>Automated</h3><p><b>40 passed, 1 skipped</b> — unit, API, security, DB, Milestone, ALPR and liveness tests.</p></div>
+    <div class="card"><h3>Docker + Redpanda</h3><p>Image built, API key/TLS checked, models cached in a volume, events consumed from <code>oculi.events</code>.</p></div>
+    <div class="card"><h3>Real models</h3><p>InsightFace same/different-person integration; ALPR read <code>5AU5341</code>; detector 0.843 / OCR 0.9998.</p></div>
+  </div>
+  <p class="sub" style="margin-top:18px"><a href="test-report.md">Full test report</a> ·
+  <a href="test-output.txt">pytest output</a> ·
+  <a href="integration-output.txt">real-model output</a> ·
+  <a href="coverage/index.html">Coverage HTML</a> ·
+  <a href="test-results.xml">JUnit XML</a></p>
+</section>
+
+<section id="start">
+  <h2>Quick start</h2>
+<pre><code>cd oculi
+python3 -m venv .venv
+.venv/bin/pip install -e ".[faiss,test]"
+
+export OCULI_API_KEY="$(openssl rand -hex 16)"
+.venv/bin/oculi serve --host 0.0.0.0 --port 8080
+
+# Docker + Redpanda
+export OCULI_API_KEY="$(openssl rand -hex 16)"
+docker compose up --build</code></pre>
+  <p class="sub">Dashboard <code>http://localhost:8080/</code> · API docs <code>/docs</code> · Metrics <code>/metrics</code>.</p>
+</section>
+</div>
+
+<footer><div class="wrap">Oculi · MIT · built with InsightFace, OpenCV, ONNX Runtime, YOLOX, fast-alpr, MiniFASNet, FastAPI, FAISS and Redpanda.</div></footer>
+</body>
+</html>

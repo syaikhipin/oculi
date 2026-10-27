@@ -1,0 +1,169 @@
+{
+  "gpu": "Tesla T4",
+  "onnxruntime": "1.22.0",
+  "providers": [
+    "TensorrtExecutionProvider",
+    "CUDAExecutionProvider",
+    "CPUExecutionProvider"
+  ],
+  "face": {
+    "providers": {
+      "cpu": [
+        "CPUExecutionProvider"
+      ],
+      "cuda": [
+        "CUDAExecutionProvider",
+        "CPUExecutionProvider"
+      ]
+    },
+    "sizes": {
+      "640x480": {
+        "cpu": {
+          "iterations": 3,
+          "mean_ms": 130.11,
+          "p50_ms": 132.79,
+          "min_ms": 122.83,
+          "max_ms": 134.72,
+          "fps": 7.69
+        },
+        "cuda": {
+          "iterations": 15,
+          "mean_ms": 36.7,
+          "p50_ms": 35.06,
+          "min_ms": 30.81,
+          "max_ms": 52.15,
+          "fps": 27.25
+        }
+      },
+      "1280x720": {
+        "cpu": {
+          "iterations": 3,
+          "mean_ms": 141.9,
+          "p50_ms": 144.52,
+          "min_ms": 133.3,
+          "max_ms": 147.88,
+          "fps": 7.05
+        },
+        "cuda": {
+          "iterations": 15,
+          "mean_ms": 32.7,
+          "p50_ms": 32.66,
+          "min_ms": 31.45,
+          "max_ms": 34.01,
+          "fps": 30.58
+        }
+      },
+      "1920x1080": {
+        "cpu": {
+          "iterations": 3,
+          "mean_ms": 147.82,
+          "p50_ms": 146.85,
+          "min_ms": 144.43,
+          "max_ms": 152.17,
+          "fps": 6.77
+        },
+        "cuda": {
+          "iterations": 15,
+          "mean_ms": 32.86,
+          "p50_ms": 32.78,
+          "min_ms": 32.24,
+          "max_ms": 34.41,
+          "fps": 30.44
+        }
+      }
+    }
+  },
+  "stages": {
+    "liveness_cpu": {
+      "iterations": 10,
+      "mean_ms": 5.74,
+      "p50_ms": 5.73,
+      "min_ms": 5.6,
+      "max_ms": 5.9,
+      "fps": 174.36
+    },
+    "objects_yolox": {
+      "iterations": 10,
+      "mean_ms": 32.48,
+      "p50_ms": 27.0,
+      "min_ms": 25.8,
+      "max_ms": 83.4,
+      "fps": 30.79
+    },
+    "objects_providers": [
+      "CUDAExecutionProvider",
+      "CPUExecutionProvider"
+    ],
+    "alpr": {
+      "iterations": 10,
+      "mean_ms": 26.21,
+      "p50_ms": 26.03,
+      "min_ms": 25.7,
+      "max_ms": 27.71,
+      "fps": 38.15
+    }
+  },
+  "full_pipeline_1080p": {
+    "iterations": 5,
+    "mean_ms": 130.05,
+    "p50_ms": 121.71,
+    "min_ms": 108.19,
+    "max_ms": 183.31,
+    "fps": 7.69
+  },
+  "matching_search": {
+    "iterations": 5,
+    "mean_ms": 59.98,
+    "p50_ms": 60.45,
+    "min_ms": 56.71,
+    "max_ms": 62.26,
+    "fps": 16.67
+  },
+  "models": [
+    {
+      "path": "alpr/cct_xs_v2_global.onnx",
+      "bytes": 3344292
+    },
+    {
+      "path": "alpr/cct_xs_v2_global_plate_config.yaml",
+      "bytes": 1725
+    },
+    {
+      "path": "insightface/models/buffalo_l.zip",
+      "bytes": 288621354
+    },
+    {
+      "path": "insightface/models/buffalo_l/1k3d68.onnx",
+      "bytes": 143607619
+    },
+    {
+      "path": "insightface/models/buffalo_l/2d106det.onnx",
+      "bytes": 5030888
+    },
+    {
+      "path": "insightface/models/buffalo_l/det_10g.onnx",
+      "bytes": 16923827
+    },
+    {
+      "path": "insightface/models/buffalo_l/genderage.onnx",
+      "bytes": 1322532
+    },
+    {
+      "path": "insightface/models/buffalo_l/w600k_r50.onnx",
+      "bytes": 174383860
+    },
+    {
+      "path": "liveness/2.7_80x80_MiniFASNetV2.onnx",
+      "bytes": 1744126
+    },
+    {
+      "path": "liveness/4_0_0_80x80_MiniFASNetV1SE.onnx",
+      "bytes": 1743294
+    },
+    {
+      "path": "yolox/object_detection_yolox_2022nov.onnx",
+      "bytes": 35858002
+    }
+  ],
+  "timestamp_utc": "2026-10-27T17:20:57Z"
+}

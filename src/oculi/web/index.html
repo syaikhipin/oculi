@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Oculi · video analytics</title>
+  <link rel="stylesheet" href="/styles.css?v=0.3.1" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="eye">◉</span> <b>Oculi</b><span class="tag">open video analytics</span></div>
+    <nav id="nav">
+      <button data-tab="dashboard" class="active">Dashboard</button>
+      <button data-tab="events">Events</button>
+      <button data-tab="watchlists">Watchlists</button>
+      <button data-tab="sources">Sources</button>
+      <button data-tab="detect">Detect</button>
+    </nav>
+    <button id="auth-key" class="ghost small" title="Set API key">API key</button>
+    <div id="health" class="health">connecting…</div>
+  </header>
+
+  <main>
+    <section id="tab-dashboard" class="tab active">
+      <div class="cards">
+        <div class="card"><span>Sources</span><strong id="stat-sources">–</strong></div>
+        <div class="card"><span>Events</span><strong id="stat-events">–</strong></div>
+        <div class="card"><span>Subjects</span><strong id="stat-subjects">–</strong></div>
+        <div class="card"><span>Templates</span><strong id="stat-templates">–</strong></div>
+        <div class="card"><span>Pipeline</span><strong id="stat-pipeline">–</strong></div>
+      </div>
+      <div class="grid2">
+        <div class="panel">
+          <div class="panel-head"><h2>Live events</h2><button id="pause-feed" class="ghost">pause</button></div>
+          <div id="live-events" class="feed empty">No events yet. Add a source or run a detection.</div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><h2>Event mix</h2><span id="event-mix-total" class="muted"></span></div>
+          <div id="event-mix" class="mix empty">No data</div>
+          <div class="panel-head" style="margin-top:18px"><h2>Workers</h2></div>
+          <div id="worker-list" class="list empty">Workers are not running in this process.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="tab-events" class="tab">
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Event log</h2>
+          <div class="filters">
+            <select id="event-type"><option value="">all types</option><option>face</option><option>face_match</option><option>spoof</option><option>object</option><option>plate</option></select>
+            <select id="event-source"><option value="">all sources</option></select>
+            <button id="events-refresh" class="ghost">refresh</button>
+          </div>
+        </div>
+        <div class="table-wrap"><table id="events-table">
+          <thead><tr><th>time</th><th>snapshot</th><th>type</th><th>source</th><th>track</th><th>label</th><th>subject / plate</th><th>score</th><th>live</th></tr></thead>
+          <tbody></tbody>
+        </table></div>
+      </div>
+    </section>
+
+    <section id="tab-watchlists" class="tab">
+      <div class="grid2">
+        <div class="panel">
+          <div class="panel-head"><h2>Watchlists</h2></div>
+          <form id="watchlist-form" class="row">
+            <input name="name" placeholder="New watchlist name" required />
+            <button>create</button>
+          </form>
+          <div id="watchlist-list" class="list empty">Loading…</div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><h2>Enroll face</h2><span id="enroll-watchlist" class="muted">default</span></div>
+          <form id="enroll-form" class="stack">
+            <input name="subject_id" placeholder="subject id (optional)" />
+            <input name="name" placeholder="Display name" required />
+            <input name="images" type="file" accept="image/*" multiple required />
+            <label class="check"><input name="require_liveness" type="checkbox" checked /> require liveness</label>
+            <button>enroll</button>
+          </form>
+          <div class="panel-head" style="margin-top:18px"><h2>Subjects</h2></div>
+          <div id="subject-list" class="list empty">Select a watchlist</div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h2>1:N search</h2></div>
+        <form id="search-form" class="row">
+          <input name="image" type="file" accept="image/*" required />
+          <input name="top_k" type="number" value="5" min="1" max="50" style="width:80px" />
+          <button>search</button>
+        </form>
+        <pre id="search-result" class="result empty">Upload a face image to search the selected watchlist.</pre>
+      </div>
+    </section>
+
+    <section id="tab-sources" class="tab">
+      <div class="grid2">
+        <div class="panel">
+          <div class="panel-head"><h2>Add source</h2></div>
+          <form id="source-form" class="stack">
+            <input name="name" placeholder="Camera name" required />
+            <input name="url" placeholder="rtsp://user:pass@host/stream or /path/video.mp4" required />
+            <div class="row">
+              <select name="kind"><option value="rtsp">RTSP</option><option value="file">file</option><option value="webcam">webcam</option></select>
+              <select name="watchlist_id" id="source-watchlist"></select>
+            </div>
+            <label class="check"><input name="milestone" type="checkbox" /> send events to Milestone</label>
+            <button>add source</button>
+          </form>
+          <p class="hint">Milestone cameras are ordinary RTSP sources. Enable “Milestone” to mirror events to the configured Generic Event receiver.</p>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><h2>Sources</h2><button id="sources-refresh" class="ghost">refresh</button></div>
+          <div id="source-list" class="list empty">No sources configured</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="tab-detect" class="tab">
+      <div class="panel">
+        <div class="panel-head"><h2>Image analysis</h2><span class="muted">faces · liveness · objects · plates</span></div>
+        <form id="detect-form" class="row">
+          <input name="image" type="file" accept="image/*" required />
+          <select name="watchlist_id" id="detect-watchlist"></select>
+          <button>analyze</button>
+        </form>
+        <div id="detect-stage" class="stage empty">Upload an image to run the full pipeline.</div>
+        <div class="grid2">
+          <pre id="detect-json" class="result empty">Results appear here.</pre>
+          <div id="detect-summary" class="list empty">No detections</div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <canvas id="overlay" hidden></canvas>
+  <script src="/app.js?v=0.3.1"></script>
+</body>
+</html>
